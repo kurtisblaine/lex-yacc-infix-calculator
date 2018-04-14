@@ -1,0 +1,322 @@
+State 20 conflicts: 2 shift/reduce
+State 21 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: input $end
+
+    1 input: %empty
+    2      | input line
+
+    3 line: '\n'
+    4     | expression '\n'
+
+    5 expression: term
+    6           | expression '+' expression
+    7           | expression '-' expression
+
+    8 term: eterm
+    9     | term '*' eterm
+   10     | term '/' eterm
+   11     | term '%' eterm
+
+   12 eterm: factor
+   13      | factor '^' eterm
+
+   14 factor: NUMBER
+   15       | '(' expression ')'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 3 4
+'%' (37) 11
+'(' (40) 15
+')' (41) 15
+'*' (42) 9
+'+' (43) 6
+'-' (45) 7
+'/' (47) 10
+'^' (94) 13
+error (256)
+NUMBER (258) 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (13)
+    on left: 0
+input (14)
+    on left: 1 2, on right: 0 2
+line (15)
+    on left: 3 4, on right: 2
+expression (16)
+    on left: 5 6 7, on right: 4 6 7 15
+term (17)
+    on left: 8 9 10 11, on right: 5 9 10 11
+eterm (18)
+    on left: 12 13, on right: 8 9 10 11 13
+factor (19)
+    on left: 14 15, on right: 12 13
+
+
+State 0
+
+    0 $accept: . input $end
+
+    $default  reduce using rule 1 (input)
+
+    input  go to state 1
+
+
+State 1
+
+    0 $accept: input . $end
+    2 input: input . line
+
+    $end    shift, and go to state 2
+    NUMBER  shift, and go to state 3
+    '\n'    shift, and go to state 4
+    '('     shift, and go to state 5
+
+    line        go to state 6
+    expression  go to state 7
+    term        go to state 8
+    eterm       go to state 9
+    factor      go to state 10
+
+
+State 2
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+State 3
+
+   14 factor: NUMBER .
+
+    $default  reduce using rule 14 (factor)
+
+
+State 4
+
+    3 line: '\n' .
+
+    $default  reduce using rule 3 (line)
+
+
+State 5
+
+   15 factor: '(' . expression ')'
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    expression  go to state 11
+    term        go to state 8
+    eterm       go to state 9
+    factor      go to state 10
+
+
+State 6
+
+    2 input: input line .
+
+    $default  reduce using rule 2 (input)
+
+
+State 7
+
+    4 line: expression . '\n'
+    6 expression: expression . '+' expression
+    7           | expression . '-' expression
+
+    '\n'  shift, and go to state 12
+    '+'   shift, and go to state 13
+    '-'   shift, and go to state 14
+
+
+State 8
+
+    5 expression: term .
+    9 term: term . '*' eterm
+   10     | term . '/' eterm
+   11     | term . '%' eterm
+
+    '*'  shift, and go to state 15
+    '/'  shift, and go to state 16
+    '%'  shift, and go to state 17
+
+    $default  reduce using rule 5 (expression)
+
+
+State 9
+
+    8 term: eterm .
+
+    $default  reduce using rule 8 (term)
+
+
+State 10
+
+   12 eterm: factor .
+   13      | factor . '^' eterm
+
+    '^'  shift, and go to state 18
+
+    $default  reduce using rule 12 (eterm)
+
+
+State 11
+
+    6 expression: expression . '+' expression
+    7           | expression . '-' expression
+   15 factor: '(' expression . ')'
+
+    '+'  shift, and go to state 13
+    '-'  shift, and go to state 14
+    ')'  shift, and go to state 19
+
+
+State 12
+
+    4 line: expression '\n' .
+
+    $default  reduce using rule 4 (line)
+
+
+State 13
+
+    6 expression: expression '+' . expression
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    expression  go to state 20
+    term        go to state 8
+    eterm       go to state 9
+    factor      go to state 10
+
+
+State 14
+
+    7 expression: expression '-' . expression
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    expression  go to state 21
+    term        go to state 8
+    eterm       go to state 9
+    factor      go to state 10
+
+
+State 15
+
+    9 term: term '*' . eterm
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    eterm   go to state 22
+    factor  go to state 10
+
+
+State 16
+
+   10 term: term '/' . eterm
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    eterm   go to state 23
+    factor  go to state 10
+
+
+State 17
+
+   11 term: term '%' . eterm
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    eterm   go to state 24
+    factor  go to state 10
+
+
+State 18
+
+   13 eterm: factor '^' . eterm
+
+    NUMBER  shift, and go to state 3
+    '('     shift, and go to state 5
+
+    eterm   go to state 25
+    factor  go to state 10
+
+
+State 19
+
+   15 factor: '(' expression ')' .
+
+    $default  reduce using rule 15 (factor)
+
+
+State 20
+
+    6 expression: expression . '+' expression
+    6           | expression '+' expression .
+    7           | expression . '-' expression
+
+    '+'  shift, and go to state 13
+    '-'  shift, and go to state 14
+
+    '+'       [reduce using rule 6 (expression)]
+    '-'       [reduce using rule 6 (expression)]
+    $default  reduce using rule 6 (expression)
+
+
+State 21
+
+    6 expression: expression . '+' expression
+    7           | expression . '-' expression
+    7           | expression '-' expression .
+
+    '+'  shift, and go to state 13
+    '-'  shift, and go to state 14
+
+    '+'       [reduce using rule 7 (expression)]
+    '-'       [reduce using rule 7 (expression)]
+    $default  reduce using rule 7 (expression)
+
+
+State 22
+
+    9 term: term '*' eterm .
+
+    $default  reduce using rule 9 (term)
+
+
+State 23
+
+   10 term: term '/' eterm .
+
+    $default  reduce using rule 10 (term)
+
+
+State 24
+
+   11 term: term '%' eterm .
+
+    $default  reduce using rule 11 (term)
+
+
+State 25
+
+   13 eterm: factor '^' eterm .
+
+    $default  reduce using rule 13 (eterm)
